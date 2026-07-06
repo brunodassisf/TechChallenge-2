@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15.18-trixie
+    ports: 
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgresAdmin
+      - POSTGRES_PASSWORD=postgresAdmin
+      - POSTGRES_DB=bloggingApp
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    restart: always
+
+volumes:
+  postgres_data:
+
