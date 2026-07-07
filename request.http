@@ -1,2 +1,25 @@
-GET http://localhost:3000/health
+@baseUrl = http://localhost:3000
+
+GET {{baseUrl}}/health
 Content-Type: application/json
+
+###
+
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+{
+    "title": "John Doe",
+    "content": "[EMAIL_ADDRESS]",
+    "authorId": 1
+}
+
+###
+
+POST {{baseUrl}}/author
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "[EMAIL_ADDRESS]"
+}

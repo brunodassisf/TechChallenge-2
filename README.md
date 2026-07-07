@@ -138,6 +138,36 @@ Retorna o status da aplicação.
 }
 ```
 
+### Criar post
+
+```
+POST /post
+```
+
+Recebe os dados do post.
+
+**Resposta:**
+```json
+{
+  "message": "Post criado com sucesso!"
+}
+```
+
+### Criar autor
+
+```
+POST /author
+```
+
+Recebe os dados do autor.
+
+**Resposta:**
+```json
+{
+  "message": "Autor cadastrado com sucesso!"
+}
+```
+
 ---
 
 ## Variáveis de Ambiente
