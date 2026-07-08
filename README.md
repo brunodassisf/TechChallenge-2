@@ -102,7 +102,8 @@ Edite o arquivo `.env` conforme necessário (veja a seção [Variáveis de Ambie
 docker-compose up -d
 ```
 
-O PostgreSQL ficará disponível em `localhost:5433`.
+O PostgreSQL ficará disponível em `localhost:5433`. As tabelas do banco de dados serão criadas automaticamente graças aos schemas que serão rodas ao rodar a API pela primeira vez.
+
 
 ### 4. Executar em desenvolvimento
 

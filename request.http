@@ -10,7 +10,7 @@ Content-Type: application/json
 
 {
     "title": "John Doe",
-    "content": "[EMAIL_ADDRESS]",
+    "content": "lorem",
     "authorId": 1
 }
 
@@ -21,5 +21,5 @@ Content-Type: application/json
 
 {
     "name": "John Doe",
-    "email": "[EMAIL_ADDRESS]"
+    "email": "john@email.com"
 }

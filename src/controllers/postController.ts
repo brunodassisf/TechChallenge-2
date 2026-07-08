@@ -1,18 +1,38 @@
-
+import { PostRepository } from "@/repositories/post.repository";
+import { CreatePostUseCase } from "@/use-cases/create-post";
 import express from "express";
+import z from "zod";
 
-class PostController {
-    create = async (req: express.Request, res: express.Response) => {
-        const { title, content, authorId } = req.body;
 
-        if (!title || !content || !authorId) {
-            throw new Error("Campos ausentes")
-        }
-        res.status(201).json({
-            message: "Post criado com sucesso!"
-        })
+export async function create(req: express.Request, res: express.Response) {
+
+    const registerBodySchema = z.object({
+        title: z.string().min(3),
+        content: z.string().min(3),
+        authorId: z.uuid(),
+    })
+
+    const { title, content, authorId } = registerBodySchema.parse(req.body);
+
+    try {
+
+        const postRepository = new PostRepository();
+        const createPostUseCase = new CreatePostUseCase(postRepository);
+        await createPostUseCase.handler(title, content, authorId);
+
+        return res.status(201).json({
+            message: "Post cadastrado com sucesso!"
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        throw new Error("Erro ao cadastrar post");
     }
 }
 
 
-export default PostController
+
+
+
+

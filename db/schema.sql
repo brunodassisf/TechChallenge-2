@@ -1,0 +1,14 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TABLE IF NOT EXISTS author (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS post (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    author_id UUID NOT NULL REFERENCES author(id) ON DELETE CASCADE
+);
