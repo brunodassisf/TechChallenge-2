@@ -1,8 +1,11 @@
+import { Author } from "@/entities/author.entity";
+
 export class Post {
     id?: string;
     title: string;
     content: string;
     authorId: string;
+    author?: Author;
 
     constructor(title: string, content: string, authorId: string) {
         this.title = title;

@@ -14,6 +14,11 @@ app.get('/health', (_req, res) => {
 app.use('/post', postRouter)
 app.use('/author', authorRouter)
 
+app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error(err);
+  return res.status(500).json({ message: 'Erro interno do servidor' });
+});
+
 app.listen(env.PORT, () => {
   console.log(`Server listening at http://localhost:${env.PORT}`);
 });
