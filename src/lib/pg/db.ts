@@ -14,10 +14,11 @@ const CONFIG = {
 export class Database {
     private pool: Pool;
     private client: PoolClient | undefined;
+    readonly ready: Promise<void>;
 
     constructor() {
         this.pool = new Pool(CONFIG);
-        this.connect();
+        this.ready = this.connect();
     }
 
     private async connect() {
@@ -40,6 +41,11 @@ export class Database {
 
     get clientInstance() {
         return this.client;
+    }
+
+    async close() {
+        this.client?.release();
+        await this.pool.end();
     }
 }
 

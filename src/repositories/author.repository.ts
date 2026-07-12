@@ -2,7 +2,7 @@ import { Author } from "@/entities/author.entity";
 import { database } from "@/lib/pg/db";
 
 export class AuthorRepository {
-    async create({ name, email }: Author): Promise<Author | undefined> {
+    async create(name: string, email: string): Promise<Author | undefined> {
 
         const result = await database.clientInstance?.query(
             `INSERT INTO author (name, email) VALUES ($1, $2) RETURNING *`,

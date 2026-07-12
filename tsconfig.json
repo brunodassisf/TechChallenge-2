@@ -6,7 +6,6 @@
     "lib": [
       "es2022"
     ],
-    "baseUrl": "./",
     "paths": {
       "@/*": [
         "./src/*"
@@ -18,7 +17,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": [
+      "jest",
+      "node"
+    ]
   },
   "include": [
     "src"

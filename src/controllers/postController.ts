@@ -2,8 +2,7 @@ import express from "express";
 import z from "zod";
 import { PostNotFoundError } from "@/errors/post-not-found.error";
 import { PostRepository } from "@/repositories/post.repository";
-import { CreatePostUseCase, GetPostsUseCase, GetPostByIdUseCase, UpdatePostUseCase, DeletePostUseCase, SearchPostUseCase } from "@/use-cases/create-post";
-
+import { CreatePostUseCase, GetPostsUseCase, GetPostByIdUseCase, UpdatePostUseCase, DeletePostUseCase, SearchPostUseCase } from "@/use-cases/use-post";
 
 export async function create(req: express.Request, res: express.Response) {
 
@@ -22,7 +21,6 @@ export async function create(req: express.Request, res: express.Response) {
             data: post
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({ message: "Erro ao cadastrar post" });
     }
 }
@@ -34,7 +32,6 @@ export async function getPosts(req: express.Request, res: express.Response) {
         const posts = await getPostsUseCase.handler();
         return res.status(200).json(posts);
     } catch (error) {
-        console.error(error);
         return res.status(500).json({ message: "Erro ao buscar posts" });
     }
 }
@@ -46,7 +43,6 @@ export async function getPostById(req: express.Request, res: express.Response) {
         const post = await getPostByIdUseCase.handler(req.params.id as string);
         return res.status(200).json(post);
     } catch (error) {
-        console.error(error);
         if (error instanceof PostNotFoundError) {
             return res.status(404).json({ message: error.message });
         }
@@ -64,7 +60,6 @@ export async function updatePost(req: express.Request, res: express.Response) {
             data: post
         });
     } catch (error) {
-        console.error(error);
         if (error instanceof PostNotFoundError) {
             return res.status(404).json({ message: error.message });
         }
@@ -82,7 +77,6 @@ export async function deletePost(req: express.Request, res: express.Response) {
         });
 
     } catch (error) {
-        console.error(error);
         if (error instanceof PostNotFoundError) {
             return res.status(404).json({ message: error.message });
         }
@@ -108,6 +102,3 @@ export async function searchPost(req: express.Request, res: express.Response) {
         return res.status(500).json({ message: "Erro ao buscar posts" });
     }
 }
-
-
-

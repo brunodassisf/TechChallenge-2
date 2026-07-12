@@ -2,7 +2,7 @@
 import express from "express";
 import z from "zod";
 import { AuthorRepository } from "@/repositories/author.repository";
-import { CreateAuthorUseCase, GetAuthorUseCase } from "@/use-cases/create-author";
+import { CreateAuthorUseCase, GetAuthorUseCase } from "@/use-cases/use-author";
 
 
 export async function create(req: express.Request, res: express.Response) {
@@ -17,7 +17,7 @@ export async function create(req: express.Request, res: express.Response) {
     try {
         const authorRepository = new AuthorRepository();
         const createAuthorUseCase = new CreateAuthorUseCase(authorRepository);
-        const author = await createAuthorUseCase.handler({ name, email });
+        const author = await createAuthorUseCase.handler(name, email);
 
         return res.status(201).json({
             message: "Autor cadastrado com sucesso!",
@@ -25,7 +25,6 @@ export async function create(req: express.Request, res: express.Response) {
         });
 
     } catch (error) {
-        console.error(error);
         return res.status(500).json({ message: "Erro ao cadastrar autor" });
     }
 }
@@ -39,7 +38,6 @@ export async function getAuthors(req: express.Request, res: express.Response) {
         return res.status(201).json(authors);
 
     } catch (error) {
-        console.error(error);
         return res.status(500).json({ message: "Erro ao buscar autores" });
     }
 }
