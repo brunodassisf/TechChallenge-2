@@ -291,6 +291,12 @@ GET /author
 
 ---
 
+## Deploy para teste
+
+### https://techchallenge-api.onrender.com
+
+Foi realizado o deploy da aplicação no ambiente do Render para fins de teste e uso pratico da api em ambiente de produção
+
 ## Experiências e Desafios
 
 ### Configuração do ambiente TypeScript + ESM
@@ -307,11 +313,10 @@ A equipe optou pelo Express 5 (ainda em release candidate no momento do início 
 
 ## Desafios
 
+### Os seguintes desafios foram observados durante o desenvolvimento do sistema
 
-<!-- 
-  Adicione aqui outros desafios enfrentados durante o desenvolvimento:
-  - Dificuldades com a modelagem do banco de dados
-  - Problemas de autenticação/autorização
-  - Decisões de arquitetura que geraram debate
-  - Qualquer incidente ou aprendizado relevante
--->
+Tevemos um pouco de dificuldade na geração e organização dos teste de integração, embora tenham sido realizado. Falto um pouco mais de domínio tecnico para elaborar melhor os testes para fornecer uma entrega de qualidade do software. Embora os membros do grupo tivesse o conhecimento apra utilizar ORM's, como por exemplo o Prisma, optamos por fazer o uso dos repositories utilizando as Querys que foram ensinadas ao longo das aulas sobre banco de dados Postegres.
+
+### Pontos de melhoria
+
+Para melhorar as próximas entregas, faremos uso do ORM prisma, pos garante uma melhor produtividade porque se base no uso de objetos em vez de lidar com as Querys. Focariamos mais na qualidade dos testes de inttegração e buscar um melhor uso deles para deixar o software com mais segurança de testes de integração. Focaremos na construção de middleware que iram fazer a nossa aplicação escalar mais rapidamente alem de preparar para implmentações futuras como uso de JWT nas requisições, construção de perfis para login, autenticação, autorização.
