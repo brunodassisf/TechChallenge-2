@@ -127,7 +127,7 @@ npm start
 ### Health Check
 
 ```
-GET /health
+GET /
 ```
 
 Retorna o status da aplicação.
@@ -139,34 +139,146 @@ Retorna o status da aplicação.
 }
 ```
 
-### Criar post
+### Posts
+
+#### Criar post
 
 ```
 POST /post
 ```
 
-Recebe os dados do post.
-
-**Resposta:**
+**Body:**
 ```json
 {
-  "message": "Post criado com sucesso!"
+  "title": "Título do post",
+  "content": "Conteúdo do post",
+  "authorId": "uuid-do-autor"
 }
 ```
 
-### Criar autor
+**Resposta (201):**
+```json
+{
+  "message": "Post cadastrado com sucesso!",
+  "data": {
+    "id": "uuid",
+    "title": "Título do post",
+    "content": "Conteúdo do post",
+    "authorId": "uuid-do-autor"
+  }
+}
+```
+
+#### Listar posts
+
+```
+GET /post
+```
+
+**Resposta (200):** array de posts, cada um com o autor já embutido.
+```json
+[
+  {
+    "id": "uuid",
+    "title": "Título do post",
+    "content": "Conteúdo do post",
+    "author": { "id": "uuid", "name": "Nome", "email": "email@teste.com" }
+  }
+]
+```
+
+#### Buscar posts por filtro
+
+```
+GET /post/search?title=&content=&author=
+```
+
+Todos os parâmetros de query são opcionais (`title`, `content`, `author`) e usam busca parcial (`ILIKE`).
+
+**Resposta (200):** array de posts, mesmo formato de `GET /post`.
+
+#### Buscar post por ID
+
+```
+GET /post/:id
+```
+
+**Resposta (200):** o post encontrado, com o autor embutido.
+**Resposta (404):** post não encontrado.
+
+#### Atualizar post
+
+```
+PUT /post/:id
+```
+
+**Body:**
+```json
+{
+  "title": "Novo título",
+  "content": "Novo conteúdo",
+  "authorId": "uuid-do-autor"
+}
+```
+
+**Resposta (200):**
+```json
+{
+  "message": "Post atualizado com sucesso!",
+  "data": { "id": "uuid", "title": "Novo título", "content": "Novo conteúdo", "author": { "...": "..." } }
+}
+```
+**Resposta (404):** post não encontrado.
+
+#### Deletar post
+
+```
+DELETE /post/:id
+```
+
+**Resposta (200):**
+```json
+{
+  "message": "Post deletado com sucesso!"
+}
+```
+**Resposta (404):** post não encontrado.
+
+### Autores
+
+#### Criar autor
 
 ```
 POST /author
 ```
 
-Recebe os dados do autor.
-
-**Resposta:**
+**Body:**
 ```json
 {
-  "message": "Autor cadastrado com sucesso!"
+  "name": "Nome do autor",
+  "email": "email@teste.com"
 }
+```
+
+**Resposta (201):**
+```json
+{
+  "message": "Autor cadastrado com sucesso!",
+  "data": { "id": "uuid", "name": "Nome do autor", "email": "email@teste.com" }
+}
+```
+
+#### Listar autores
+
+```
+GET /author
+```
+
+**Resposta (201):** array de autores.
+```json
+[
+  { "id": "uuid", "name": "Nome do autor", "email": "email@teste.com" }
+]
 ```
 
 ---
@@ -192,6 +304,9 @@ Adotamos Zod para validar as variáveis de ambiente na inicialização em vez de
 ### Express 5
 
 A equipe optou pelo Express 5 (ainda em release candidate no momento do início do projeto), que traz tratamento nativo de erros assíncronos — eliminando a necessidade do padrão `try/catch` + `next(err)` em cada controller. O principal desafio foi a compatibilidade de tipagens (`@types/express@5`), que ainda apresentava divergências em alguns casos.
+
+## Desafios
+
 
 <!-- 
   Adicione aqui outros desafios enfrentados durante o desenvolvimento:

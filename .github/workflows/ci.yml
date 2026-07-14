@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  PORT: 3000
+  DB_USER: postgres
+  DB_HOST: localhost
+  DB_NAME: techchallenge
+  DB_PASSWORD: postgres
+  DB_PORT: 5432
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build (typecheck)
+        run: npm run build
+
+      - name: Testes unitários
+        run: npm test
+
+  integration:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Testes de integração (Testcontainers)
+        run: npm run test:integration
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [test, integration]
+    # Só dispara o deploy em push direto na main (não em PR), e só
+    # depois que os jobs de teste acima tiverem passado.
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Disparar deploy no Render
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"

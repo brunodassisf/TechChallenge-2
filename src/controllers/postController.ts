@@ -20,7 +20,7 @@ export async function create(req: express.Request, res: express.Response) {
             message: "Post cadastrado com sucesso!",
             data: post
         });
-    } catch (error) {
+    } catch (_error) {
         return res.status(500).json({ message: "Erro ao cadastrar post" });
     }
 }
@@ -31,7 +31,7 @@ export async function getPosts(req: express.Request, res: express.Response) {
         const getPostsUseCase = new GetPostsUseCase(postRepository);
         const posts = await getPostsUseCase.handler();
         return res.status(200).json(posts);
-    } catch (error) {
+    } catch (_error) {
         return res.status(500).json({ message: "Erro ao buscar posts" });
     }
 }
@@ -98,7 +98,7 @@ export async function searchPost(req: express.Request, res: express.Response) {
         const searchPostUseCase = new SearchPostUseCase(postRepository);
         const posts = await searchPostUseCase.handler(title, content, author);
         return res.status(200).json(posts);
-    } catch (error) {
+    } catch (_error) {
         return res.status(500).json({ message: "Erro ao buscar posts" });
     }
 }

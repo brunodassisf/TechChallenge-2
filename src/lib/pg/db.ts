@@ -9,6 +9,10 @@ const CONFIG = {
     database: env.DB_NAME,
     password: env.DB_PASSWORD,
     port: env.DB_PORT,
+    // O Postgres gerenciado do Render exige SSL; localmente (docker-compose)
+    // e nos testes (Testcontainers) não há SSL disponível, por isso é opt-in
+    // via DB_SSL em vez de depender de NODE_ENV.
+    ssl: env.DB_SSL ? { rejectUnauthorized: false } : undefined,
 }
 
 export class Database {
@@ -28,7 +32,7 @@ export class Database {
         } catch (error) {
             console.error(`Error connecting to database: ${error}`)
 
-            throw new Error(`Error connecting to database: ${error}`)
+            throw new Error(`Error connecting to database: ${error}`, { cause: error })
         }
     }
 

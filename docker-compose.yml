@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:15.18-trixie
-    ports: 
+    ports:
       - "5433:5432"
     environment:
       - POSTGRES_USER=postgresAdmin
@@ -9,6 +9,28 @@ services:
       - POSTGRES_DB=bloggingApp
     volumes:
       - postgres_data:/var/lib/postgresql
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgresAdmin -d bloggingApp"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_USER=postgresAdmin
+      - DB_HOST=postgres
+      - DB_NAME=bloggingApp
+      - DB_PASSWORD=postgresAdmin
+      - DB_PORT=5432
+      - DB_SSL=false
+    depends_on:
+      postgres:
+        condition: service_healthy
     restart: always
 
 volumes:

@@ -2,12 +2,15 @@ import express from 'express';
 import { env } from '@/env';
 import { postRouter } from '@/routes/postRouter';
 import { authorRouter } from '@/routes/authorRouter';
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "@/lib/swagger";
 
 const app = express();
 
 app.use(express.json());
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.get('/health', (_req, res) => {
+app.get('/', (_req, res) => {
   res.json({ status: 'ok' });
 });
 

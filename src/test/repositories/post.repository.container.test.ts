@@ -6,7 +6,7 @@ import type { Database as DatabaseClass } from "@/lib/pg/db";
 // Testes de integração: sobem um Postgres real via Testcontainers (exige Docker).
 // As dependências (@/env, @/lib/pg/db, repositories) só podem ser importadas
 // DEPOIS de configurar as variáveis de ambiente do container, então usamos
-// `require` dentro do beforeAll em vez de `import` no topo do arquivo.
+// `import()` dinâmico dentro do beforeAll em vez de `import` no topo do arquivo.
 describe("PostRepository (container)", () => {
     let container: StartedPostgreSqlContainer;
     let database: DatabaseClass;
@@ -23,11 +23,11 @@ describe("PostRepository (container)", () => {
         process.env.DB_PASSWORD = container.getPassword();
         process.env.DB_NAME = container.getDatabase();
 
-        ({ database } = require("@/lib/pg/db"));
+        ({ database } = await import("@/lib/pg/db"));
         await database.ready;
 
-        const { PostRepository } = require("@/repositories/post.repository");
-        const { AuthorRepository } = require("@/repositories/author.repository");
+        const { PostRepository } = await import("@/repositories/post.repository");
+        const { AuthorRepository } = await import("@/repositories/author.repository");
         postRepository = new PostRepository();
         authorRepository = new AuthorRepository();
 
@@ -77,7 +77,7 @@ describe("PostRepository (container)", () => {
     });
 
     it("lança PostNotFoundError ao atualizar um post inexistente", async () => {
-        const { PostNotFoundError } = require("@/errors/post-not-found.error");
+        const { PostNotFoundError } = await import("@/errors/post-not-found.error");
 
         await expect(
             postRepository.updateById("00000000-0000-0000-0000-000000000000", {
@@ -93,7 +93,7 @@ describe("PostRepository (container)", () => {
 
         await postRepository.deleteById(created.id as string);
 
-        const { PostNotFoundError } = require("@/errors/post-not-found.error");
+        const { PostNotFoundError } = await import("@/errors/post-not-found.error");
         await expect(postRepository.findById(created.id as string)).rejects.toBeInstanceOf(PostNotFoundError);
     });
 });

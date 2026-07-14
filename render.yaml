@@ -1,0 +1,44 @@
+databases:
+  - name: techchallenge-db
+    plan: free
+    databaseName: techchallenge
+    user: techchallenge
+
+services:
+  - type: web
+    name: techchallenge-api
+    runtime: node
+    plan: free
+    region: oregon
+
+
+    autoDeploy: false
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: PORT
+        value: 3000
+      - key: DB_SSL
+        value: "true"
+      - key: DB_HOST
+        fromDatabase:
+          name: techchallenge-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: techchallenge-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: techchallenge-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: techchallenge-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: techchallenge-db
+          property: password

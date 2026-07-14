@@ -24,7 +24,7 @@ export async function create(req: express.Request, res: express.Response) {
             data: author
         });
 
-    } catch (error) {
+    } catch (_error) {
         return res.status(500).json({ message: "Erro ao cadastrar autor" });
     }
 }
@@ -37,7 +37,7 @@ export async function getAuthors(req: express.Request, res: express.Response) {
 
         return res.status(201).json(authors);
 
-    } catch (error) {
+    } catch (_error) {
         return res.status(500).json({ message: "Erro ao buscar autores" });
     }
 }
